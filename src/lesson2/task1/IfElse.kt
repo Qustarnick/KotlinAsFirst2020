@@ -3,6 +3,7 @@
 package lesson2.task1
 
 import lesson1.task1.discriminant
+import lesson1.task1.sqr
 import kotlin.math.max
 import kotlin.math.sqrt
 
@@ -68,7 +69,14 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * Мой возраст. Для заданного 0 < n < 200, рассматриваемого как возраст человека,
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
-fun ageDescription(age: Int): String = TODO()
+fun ageDescription(age: Int): String {
+    val num = age % 10
+    return when {
+        (num == 1) and (age != 11) and (age != 111) -> "$age год"
+        (num in 2..4) and (age !in 12..14) -> "$age года"
+        else -> "$age лет"
+    }
+}
 
 /**
  * Простая (2 балла)
@@ -81,7 +89,18 @@ fun timeForHalfWay(
     t1: Double, v1: Double,
     t2: Double, v2: Double,
     t3: Double, v3: Double
-): Double = TODO()
+): Double {
+    val S = (t1 * v1 + t2 * v2 + t3 * v3) / 2
+    val S1 = t1 * v1
+    val S2 = t2 * v2
+    val S3 = t3 * v3
+    return when {
+        (S < S1) -> S / v1
+        (S > S1 && S1 + S2 > S) -> (t1 + (S - S1) / v2)
+        (S > S1 + S2 && S < S1 + S2 + S3) -> (t1 + t2 + (S - S1 - S2) / v3)
+        else -> 1.0
+    }
+}
 
 /**
  * Простая (2 балла)
@@ -95,8 +114,15 @@ fun timeForHalfWay(
 fun whichRookThreatens(
     kingX: Int, kingY: Int,
     rookX1: Int, rookY1: Int,
-    rookX2: Int, rookY2: Int
-): Int = TODO()
+    rookX2: Int, rookY2: Int): Int {
+    if ((kingX == rookX1 && kingY == rookY2) || (kingX == rookX2 && kingY == rookY1)) {
+        return 3
+    } else if (kingX == rookX1 && kingX != rookX2 || kingY == rookY1 && kingY != rookY2) {
+        return 1
+    } else if (kingX != rookX1 && kingX == rookX2 || kingY != rookY1 && kingY == rookY2) {
+        return 2
+    } else return 0
+}
 
 /**
  * Простая (2 балла)
@@ -122,7 +148,38 @@ fun rookOrBishopThreatens(
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
+fun triangleKind(a: Double, b: Double, c: Double): Int {
+    if (a + b > c && a + c > b && b + c > a) {
+        if ((a >= c) && (a >= b)) {
+            val sum = sqr(b) + sqr(c)
+            return when {
+                (sqr(a) < sum) -> 0
+                (sqr(a) == sum) -> 1
+                (sqr(a) > sum) -> 2
+                else -> -1
+            }
+        }
+        if ((b >= c) && (b >= a)) {
+            val sum = sqr(a) + sqr(c)
+            return when {
+                (sqr(b) < sum) -> 0
+                (sqr(b) == sum) -> 1
+                (sqr(b) > sum) -> 2
+                else -> -1
+            }
+        }
+        if ((c >= a) && (c >= b)) {
+            val sum = sqr(a) + sqr(b)
+            return when {
+                (sqr(c) < sum) -> 0
+                (sqr(c) == sum) -> 1
+                (sqr(c) > sum) -> 2
+                else -> -1
+            }
+        }
+    } else return -1
+    return -1
+}
 
 /**
  * Средняя (3 балла)
