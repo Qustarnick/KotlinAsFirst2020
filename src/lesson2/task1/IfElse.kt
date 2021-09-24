@@ -4,6 +4,7 @@ package lesson2.task1
 
 import lesson1.task1.discriminant
 import lesson1.task1.sqr
+import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.sqrt
 
@@ -114,7 +115,8 @@ fun timeForHalfWay(
 fun whichRookThreatens(
     kingX: Int, kingY: Int,
     rookX1: Int, rookY1: Int,
-    rookX2: Int, rookY2: Int): Int {
+    rookX2: Int, rookY2: Int
+): Int {
     if ((kingX == rookX1 && kingY == rookY2) || (kingX == rookX2 && kingY == rookY1)) {
         return 3
     } else if (kingX == rookX1 && kingX != rookX2 || kingY == rookY1 && kingY != rookY2) {
@@ -138,7 +140,17 @@ fun rookOrBishopThreatens(
     kingX: Int, kingY: Int,
     rookX: Int, rookY: Int,
     bishopX: Int, bishopY: Int
-): Int = TODO()
+): Int {
+    val difX = kingX - bishopX
+    val difY = kingY - bishopY
+    if ((kingX == rookX || kingY == rookY) && (abs(difX) == abs(difY))) {
+        return 3
+    } else if ((kingX != rookX && kingY != rookY) && (abs(difX) == abs(difY))) {
+        return 2
+    } else if ((kingX == rookX || kingY == rookY) && (kingX != bishopX && kingY != bishopY)) {
+        return 1
+    } else return 0
+}
 
 /**
  * Простая (2 балла)
@@ -189,4 +201,11 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = TODO()
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = when {
+    b == c -> 0
+    (c < a) && (b < d) -> b - a
+    (a < c) && (d < b) -> d - c
+    (a < c) && (c < b) && (b < d) -> b - c
+    (c < a) && (a < d) && (d < b) -> d - a
+    else -> -1
+}
