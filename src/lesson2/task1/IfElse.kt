@@ -4,7 +4,6 @@ package lesson2.task1
 
 import lesson1.task1.discriminant
 import lesson1.task1.sqr
-import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.sqrt
 
@@ -73,8 +72,8 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
 fun ageDescription(age: Int): String {
     val num = age % 10
     return when {
-        (num == 1) and (age != 11) and (age != 111) -> "$age год"
-        (num in 2..4) and (age % 100 !in 12..14) -> "$age года"
+        (num == 1) && (age != 11) && (age != 111) -> "$age год"
+        (num in 2..4) && (age % 100 !in 12..14) -> "$age года"
         else -> "$age лет"
     }
 }
@@ -91,15 +90,13 @@ fun timeForHalfWay(
     t2: Double, v2: Double,
     t3: Double, v3: Double
 ): Double {
-    val S = (t1 * v1 + t2 * v2 + t3 * v3) / 2
-    val S1 = t1 * v1
-    val S2 = t2 * v2
-    val S3 = t3 * v3
+    val way = (t1 * v1 + t2 * v2 + t3 * v3) / 2
+    val way1 = t1 * v1
+    val way2 = t2 * v2
     return when {
-        (S < S1) -> S / v1
-        (S > S1 && S1 + S2 > S) -> (t1 + (S - S1) / v2)
-        (S > S1 + S2 && S < S1 + S2 + S3) -> (t1 + t2 + (S - S1 - S2) / v3)
-        else -> 1.0
+        (way < way1) -> way / v1
+        (way > way1 && way1 + way2 > way) -> (t1 + (way - way1) / v2)
+        else -> (t1 + t2 + (way - way1 - way2) / v3)
     }
 }
 
@@ -117,13 +114,12 @@ fun whichRookThreatens(
     rookX1: Int, rookY1: Int,
     rookX2: Int, rookY2: Int
 ): Int {
-    if ((kingX == rookX1 && kingY == rookY2) || (kingX == rookX2 && kingY == rookY1)) {
-        return 3
-    } else if (kingX == rookX1 && kingX != rookX2 || kingY == rookY1 && kingY != rookY2) {
-        return 1
-    } else if (kingX != rookX1 && kingX == rookX2 || kingY != rookY1 && kingY == rookY2) {
-        return 2
-    } else return 0
+    return when {
+        (((kingX == rookX1 || kingY == rookY1) && (kingX == rookX2 || kingY == rookY2))) -> 3
+        (kingX == rookX1 || kingY == rookY1) && (kingX != rookX2 && kingY != rookY2) -> 1
+        (kingX == rookX2 || kingY == rookY2) && (kingX != rookX1 && kingY != rookY1) -> 2
+        else -> 0
+    }
 }
 
 /**
@@ -141,15 +137,16 @@ fun rookOrBishopThreatens(
     rookX: Int, rookY: Int,
     bishopX: Int, bishopY: Int
 ): Int {
-    val difX = kingX - bishopX
-    val difY = kingY - bishopY
-    if ((kingX == rookX || kingY == rookY) && (abs(difX) == abs(difY))) {
-        return 3
-    } else if ((kingX != rookX && kingY != rookY) && (abs(difX) == abs(difY))) {
-        return 2
-    } else if ((kingX == rookX || kingY == rookY) && (kingX != bishopX && kingY != bishopY)) {
-        return 1
-    } else return 0
+    val difKing = kingX - kingY
+    val difBishop = bishopX - bishopY
+    val sumKing = kingX + kingY
+    val sumBishop = bishopX + bishopY
+    return when {
+        (kingX == rookX || kingY == rookY) && (difKing == difBishop || sumKing == sumBishop) -> 3
+        (kingX == rookX || kingY == rookY) && (difKing != difBishop && sumKing != sumBishop) -> 1
+        (kingX != rookX && kingY != rookY) && (difKing == difBishop || sumKing == sumBishop) -> 2
+        else -> 0
+    }
 }
 
 /**
@@ -161,36 +158,25 @@ fun rookOrBishopThreatens(
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
-    if (a + b > c && a + c > b && b + c > a) {
+    if ((a + b > c) && (a + c > b) && (b + c > a)) {
+        val max: Double
+        val sum: Double
         if ((a >= c) && (a >= b)) {
-            val sum = sqr(b) + sqr(c)
-            return when {
-                (sqr(a) < sum) -> 0
-                (sqr(a) == sum) -> 1
-                (sqr(a) > sum) -> 2
-                else -> -1
-            }
+            sum = sqr(b) + sqr(c)
+            max = sqr(a)
+        } else if ((b >= c) && (b >= a)) {
+            sum = sqr(a) + sqr(c)
+            max = sqr(b)
+        } else {
+            sum = sqr(a) + sqr(b)
+            max = sqr(c)
         }
-        if ((b >= c) && (b >= a)) {
-            val sum = sqr(a) + sqr(c)
-            return when {
-                (sqr(b) < sum) -> 0
-                (sqr(b) == sum) -> 1
-                (sqr(b) > sum) -> 2
-                else -> -1
-            }
-        }
-        if ((c >= a) && (c >= b)) {
-            val sum = sqr(a) + sqr(b)
-            return when {
-                (sqr(c) < sum) -> 0
-                (sqr(c) == sum) -> 1
-                (sqr(c) > sum) -> 2
-                else -> -1
-            }
+        return when {
+            sum > max -> 0
+            sum == max -> 1
+            else -> 2
         }
     } else return -1
-    return -1
 }
 
 /**
@@ -202,10 +188,9 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Если пересечения нет, вернуть -1.
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = when {
-    (b == c) || (a == 0 && b == 0) || (c == 0 && d == 0) -> 0
-    (c < a) && (b < d) -> b - a
+    (a > d) || (b < c) -> -1
     (a < c) && (d < b) -> d - c
-    (a < c) && (c < b) && (b < d) -> b - c
-    (c < a) && (a < d) && (d < b) -> d - a
-    else -> -1
+    (a > c) && (b < d) -> b - a
+    (a < c) && (b < d) && (c <= b) -> b - c
+    else -> d - a
 }
