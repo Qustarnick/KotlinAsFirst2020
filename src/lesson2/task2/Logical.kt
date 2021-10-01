@@ -4,6 +4,8 @@ package lesson2.task2
 
 import lesson1.task1.sqr
 import kotlin.math.abs
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.sqrt
 
 /**
@@ -45,18 +47,12 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean {
  * Вернуть число дней в этом месяце этого года по григорианскому календарю.
  */
 fun daysInMonth(month: Int, year: Int): Int {
-    if ((year % 400 == 0) || (year % 4 == 0 && year % 100 != 0)) {
-        return when (month) {
-            2 -> 29
-            1, 3, 5, 7, 8, 10, 11 -> 31
-            else -> 30
-        }
-    } else {
-        return when (month) {
-            2 -> 28
-            1, 3, 5, 7, 8, 10, 11 -> 31
-            else -> 30
-        }
+    if (month == 2) {
+        return if ((year % 400 == 0) || (year % 4 == 0 && year % 100 != 0)) 29 else 28
+    }
+    return when (month) {
+        1, 3, 5, 7, 8, 10, 12 -> 31
+        else -> 30
     }
 }
 
@@ -81,5 +77,9 @@ fun circleInside(
  * кирпич 4 х 4 х 4 пройдёт через отверстие 4 х 4.
  * Вернуть true, если кирпич пройдёт
  */
-fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean =
-    (c <= s && b <= r) || (b <= s && c <= r) || (a <= s && b <= r) || (a <= s && c <= r) || (a <= r && c <= s)
+fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
+    val minWall = min(r, s)
+    val maxWall = max(r, s)
+    return (minWall >= a || minWall >= b || minWall >= c) && (maxWall >= a && (maxWall >= b || maxWall >= c) ||
+            maxWall >= b && (maxWall >= a || maxWall >= c))
+}
