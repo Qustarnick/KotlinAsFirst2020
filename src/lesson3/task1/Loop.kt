@@ -2,9 +2,6 @@
 
 package lesson3.task1
 
-import lesson1.task1.sqr
-import kotlin.math.abs
-import kotlin.math.pow
 import kotlin.math.sqrt
 
 // Урок 3: циклы
@@ -76,13 +73,13 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun digitNumber(n: Int): Int {
-    var counter = 0
-    var number = n
+    var count = 0
+    var divTen = n
     do {
-        counter++
-        number /= 10
-    } while (number != 0)
-    return (counter)
+        count++
+        divTen /= 10
+    } while (divTen > 0)
+    return count
 }
 
 /**
@@ -92,13 +89,14 @@ fun digitNumber(n: Int): Int {
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
 fun fib(n: Int): Int {
-    var a = 1
+    var a = 0
     var b = 1
-    for (i in 2 until n) {
-        b = a + b
-        a = b - a
+    for (i in 1..n) {
+        val sum = a + b
+        a = b
+        b = sum
     }
-    return (b)
+    return a
 }
 
 /**
@@ -107,8 +105,13 @@ fun fib(n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    for (i in 2..sqrt(n.toDouble()).toInt()) if (n % i == 0) return i
-    return n
+    var divisor = 0
+    for (i in 2..n) {
+        if (n % i > 0) continue
+        divisor = i
+        if (divisor > 1) break
+    }
+    return divisor
 }
 
 /**
@@ -116,7 +119,15 @@ fun minDivisor(n: Int): Int {
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int = TODO()
+fun maxDivisor(n: Int): Int {
+    var divisor = 0
+    for (i in n downTo 1) {
+        if (n % i > 0) continue
+        divisor = i
+        if (divisor < n) break
+    }
+    return divisor
+}
 
 /**
  * Простая (2 балла)
@@ -142,14 +153,7 @@ fun collatzSteps(x: Int): Int = TODO()
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-// Вычисляем НОД по алгоритму Евклида
-fun gcd(m: Int, n: Int): Int {
-    return if (n == 0) m
-    else gcd(n, m % n)
-}
-
-// Вычисляем НОК с помощью НОД
-fun lcm(m: Int, n: Int): Int = m / gcd(m, n) * n
+fun lcm(m: Int, n: Int): Int = TODO()
 
 /**
  * Средняя (3 балла)
@@ -158,16 +162,7 @@ fun lcm(m: Int, n: Int): Int = m / gcd(m, n) * n
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean = gcd(m, n) == 1
-
-/**
- * Средняя (3 балла)
- *
- * Для заданных чисел m и n, m <= n, определить, имеется ли хотя бы один точный квадрат между m и n,
- * то есть, существует ли такое целое k, что m <= k*k <= n.
- * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
- */
-fun squareBetweenExists(m: Int, n: Int): Boolean = TODO()
+fun isCoPrime(m: Int, n: Int): Boolean = TODO()
 
 /**
  * Средняя (3 балла)
@@ -230,15 +225,7 @@ fun cos(x: Double, eps: Double): Double = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int {
-    var totalDigitNmb = 0
-    var i = 0
-    while (totalDigitNmb < n) {
-        i++
-        totalDigitNmb += digitNumber(sqr(i))
-    }
-    return sqr(i) / 10.0.pow(totalDigitNmb - n).toInt() % 10
-}
+fun squareSequenceDigit(n: Int): Int = TODO()
 
 /**
  * Сложная (5 баллов)
@@ -249,13 +236,4 @@ fun squareSequenceDigit(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int {
-    var totalDigitNmb = 0
-    var i = 0
-    while (totalDigitNmb < n) {
-        i++
-        totalDigitNmb += digitNumber(fib(i))
-    }
-    val degree: Int = 10.0.pow(totalDigitNmb - n).toInt()
-    return fib(i) / degree % 10
-}
+fun fibSequenceDigit(n: Int): Int = TODO()
