@@ -2,6 +2,7 @@
 
 package lesson3.task1
 
+import kotlin.math.min
 import kotlin.math.sqrt
 
 // Урок 3: циклы
@@ -145,7 +146,18 @@ fun maxDivisor(n: Int): Int {
  * Написать функцию, которая находит, сколько шагов требуется для
  * этого для какого-либо начального X > 0.
  */
-fun collatzSteps(x: Int): Int = TODO()
+fun collatzSteps(x: Int): Int {
+    var count = 0
+    var k = x
+    while (k > 1) if (k % 2 == 0) {
+        count++
+        k /= 2
+    } else {
+        count++
+        k = 3 * k + 1
+    }
+    return count
+}
 
 /**
  * Средняя (3 балла)
@@ -153,7 +165,14 @@ fun collatzSteps(x: Int): Int = TODO()
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int = TODO()
+fun lcm(m: Int, n: Int): Int {
+    var k = min(m, n)
+    while (true) {
+        if (k % m == 0 && k % n == 0) break
+        k++
+    }
+    return k
+}
 
 /**
  * Средняя (3 балла)
