@@ -168,7 +168,10 @@ fun collatzSteps(x: Int): Int {
 fun lcm(m: Int, n: Int): Int {
     var k = min(m, n)
     while (true) {
-        if (k % m == 0 && k % n == 0) break
+        if ((m % 2 == 0 && n % 2 != 0) || (n % 2 == 0 && m % 2 != 0)) {
+            k = m * n
+            break
+        } else if ((k % m == 0) && (k % n == 0)) break
         k++
     }
     return k
