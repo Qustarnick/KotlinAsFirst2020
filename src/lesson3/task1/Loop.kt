@@ -2,6 +2,7 @@
 
 package lesson3.task1
 
+import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.sqrt
 
@@ -110,7 +111,7 @@ fun minDivisor(n: Int): Int {
     for (i in 2..n) {
         if (n % i > 0) continue
         divisor = i
-        if (divisor > 1) break
+        break
     }
     return divisor
 }
@@ -120,15 +121,7 @@ fun minDivisor(n: Int): Int {
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int {
-    var divisor = 0
-    for (i in n downTo 1) {
-        if (n % i > 0) continue
-        divisor = i
-        if (divisor < n) break
-    }
-    return divisor
-}
+fun maxDivisor(n: Int): Int = n / minDivisor(n)
 
 /**
  * Простая (2 балла)
@@ -149,12 +142,13 @@ fun maxDivisor(n: Int): Int {
 fun collatzSteps(x: Int): Int {
     var count = 0
     var k = x
-    while (k > 1) if (k % 2 == 0) {
+    while (k > 1) {
         count++
-        k /= 2
-    } else {
-        count++
-        k = 3 * k + 1
+        if (k % 2 == 0) {
+            k /= 2
+        } else {
+            k = 3 * k + 1
+        }
     }
     return count
 }
@@ -166,15 +160,16 @@ fun collatzSteps(x: Int): Int {
  * минимальное число k, которое делится и на m и на n без остатка
  */
 fun lcm(m: Int, n: Int): Int {
-    var k = min(m, n)
-    while (true) {
-        if ((m % 2 == 0 && n % 2 != 0) || (n % 2 == 0 && m % 2 != 0)) {
-            k = m * n
-            break
-        } else if ((k % m == 0) && (k % n == 0)) break
-        k++
+    var numberOne = m
+    var numberTwo = n
+    while (numberOne != 0 && numberTwo != 0) {
+        if (numberOne > numberTwo) {
+            numberOne %= numberTwo
+        } else {
+            numberTwo %= numberOne
+        }
     }
-    return k
+    return (m * n / (numberOne + numberTwo))
 }
 
 /**
@@ -193,7 +188,15 @@ fun isCoPrime(m: Int, n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun revert(n: Int): Int = TODO()
+fun revert(n: Int): Int {
+    var num = n
+    var reverse = 0
+    while (num > 0) {
+        reverse = reverse * 10 + (num % 10)
+        num /= 10
+    }
+    return reverse
+}
 
 /**
  * Средняя (3 балла)
