@@ -3,7 +3,6 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
-import kotlin.math.pow
 import kotlin.math.sqrt
 
 // Урок 4: списки
@@ -99,7 +98,7 @@ fun squares(vararg array: Int) = squares(array.toList()).toTypedArray()
  * "А роза упала на лапу Азора" является палиндромом.
  */
 fun isPalindrome(str: String): Boolean {
-    val lowerCase = str.toLowerCase().filter { it != ' ' }
+    val lowerCase = str.lowercase().filter { it != ' ' }
     for (i in 0..lowerCase.length / 2) {
         if (lowerCase[i] != lowerCase[lowerCase.length - i - 1]) return false
     }
@@ -121,14 +120,20 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  * по формуле abs = sqrt(a1^2 + a2^2 + ... + aN^2).
  * Модуль пустого вектора считать равным 0.0.
  */
-fun abs(v: List<Double>): Double = sqrt(v.sumOf { it * it })
+fun abs(v: List<Double>): Double = when {
+    v.isEmpty() -> 0.0
+    else -> sqrt(v.sumOf { it * it })
+}
 
 /**
  * Простая (2 балла)
  *
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
-fun mean(list: List<Double>): Double = if (list.isEmpty()) 0.0 else list.sum() / list.size
+fun mean(list: List<Double>): Double = when {
+    list.isEmpty() -> 0.0
+    else -> list.sum() / list.size
+}
 
 /**
  * Средняя (3 балла)
@@ -138,15 +143,7 @@ fun mean(list: List<Double>): Double = if (list.isEmpty()) 0.0 else list.sum() /
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun center(list: MutableList<Double>): MutableList<Double> {
-    val meanList = mean(list)
-    if (list.isEmpty()) return list
-    for (i in 0 until list.size) {
-        list[i] -= meanList
-    }
-    return list
-
-}
+fun center(list: MutableList<Double>): MutableList<Double> = TODO()
 
 /**
  * Средняя (3 балла)
@@ -155,13 +152,7 @@ fun center(list: MutableList<Double>): MutableList<Double> {
  * представленные в виде списков a и b. Скалярное произведение считать по формуле:
  * C = a1b1 + a2b2 + ... + aNbN. Произведение пустых векторов считать равным 0.
  */
-fun times(a: List<Int>, b: List<Int>): Int {
-    var innerProduct = 0
-    for (i in a.indices) {
-        innerProduct += a[i] * b[i]
-    }
-    return innerProduct
-}
+fun times(a: List<Int>, b: List<Int>): Int = TODO()
 
 /**
  * Средняя (3 балла)
@@ -183,12 +174,7 @@ fun polynom(p: List<Int>, x: Int): Int = TODO()
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun accumulate(list: MutableList<Int>): MutableList<Int> {
-    for (i in 1 until list.size) {
-        list[i] += list[i - 1]
-    }
-    return list
-}
+fun accumulate(list: MutableList<Int>): MutableList<Int> = TODO()
 
 /**
  * Средняя (3 балла)
@@ -197,18 +183,7 @@ fun accumulate(list: MutableList<Int>): MutableList<Int> {
  * Результат разложения вернуть в виде списка множителей, например 75 -> (3, 5, 5).
  * Множители в списке должны располагаться по возрастанию.
  */
-fun factorize(n: Int): List<Int> {
-    var number = n
-    val result = mutableListOf<Int>()
-    for (i in 2..sqrt(number.toDouble()).toInt()) {
-        while (number % i == 0) {
-            result += i
-            number /= i
-        }
-    }
-    if (number != 1) result += number
-    return result
-}
+fun factorize(n: Int): List<Int> = TODO()
 
 /**
  * Сложная (4 балла)
@@ -262,17 +237,7 @@ fun decimal(digits: List<Int>, base: Int): Int = TODO()
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, str.toInt(base)), запрещается.
  */
-
-fun decimalFromString(str: String, base: Int): Int {
-    var result = 0
-    var degree = str.length - 1
-    for (digit in str.indices) {
-        result += if (str[digit].isDigit()) ((str[digit] - '0') * base.toDouble().pow(degree)).toInt()
-        else ((10 + (str[digit] - 'a')) * base.toDouble().pow(degree)).toInt()
-        degree--
-    }
-    return result
-}
+fun decimalFromString(str: String, base: Int): Int = TODO()
 
 /**
  * Сложная (5 баллов)
@@ -282,21 +247,7 @@ fun decimalFromString(str: String, base: Int): Int {
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-
-fun roman(n: Int): String {
-    var number = n
-    val arabic = arrayOf(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
-    val roman = listOf("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
-    var result = ""
-    for (i in arabic.indices) {
-        while (number >= arabic[i]) {
-            result += roman[i]
-            number -= arabic[i]
-        }
-    }
-    return result
-}
-
+fun roman(n: Int): String = TODO()
 
 /**
  * Очень сложная (7 баллов)
