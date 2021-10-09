@@ -156,25 +156,18 @@ fun rookOrBishopThreatens(
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
-    if ((a + b > c) && (a + c > b) && (b + c > a)) {
-        val max: Double
-        val sum: Double
-        if ((a >= c) && (a >= b)) {
-            sum = sqr(b) + sqr(c)
-            max = sqr(a)
-        } else if ((b >= c) && (b >= a)) {
-            sum = sqr(a) + sqr(c)
-            max = sqr(b)
-        } else {
-            sum = sqr(a) + sqr(b)
-            max = sqr(c)
-        }
-        return when {
-            sum > max -> 0
-            sum == max -> 1
+    return if ((a + b > c) && (a + c > b) && (b + c > a)) {
+        val max = maxOf(a, b, c)
+        val min = minOf(a, b, c)
+        val average = a + b + c - max - min
+        val sum = sqr(min) + sqr(average)
+        val big = sqr(max)
+        when {
+            sum > big -> 0
+            sum == big -> 1
             else -> 2
         }
-    } else return -1
+    } else -1
 }
 
 /**

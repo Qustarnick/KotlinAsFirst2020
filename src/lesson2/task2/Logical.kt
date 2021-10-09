@@ -47,13 +47,14 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean {
  * Вернуть число дней в этом месяце этого года по григорианскому календарю.
  */
 fun daysInMonth(month: Int, year: Int): Int {
-    if (month == 2) {
-        return if ((year % 400 == 0) || (year % 4 == 0 && year % 100 != 0)) 29 else 28
+    val leapYear = ((year % 400 == 0) || (year % 4 == 0 && year % 100 != 0))
+    return when {
+        (month == 4) || (month == 6) || (month == 9) || (month == 11) -> 30
+        (month == 2) && leapYear -> 29
+        (month == 2) && !leapYear -> 28
+        else -> 31
     }
-    return when (month) {
-        1, 3, 5, 7, 8, 10, 12 -> 31
-        else -> 30
-    }
+
 }
 
 /**
@@ -80,6 +81,8 @@ fun circleInside(
 fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
     val minWall = min(r, s)
     val maxWall = max(r, s)
-    return (minWall >= a || minWall >= b || minWall >= c) && (maxWall >= a && (maxWall >= b || maxWall >= c) ||
-            maxWall >= b && (maxWall >= a || maxWall >= c))
+    val minBrick = minOf(a, b, c)
+    val maxBrick = maxOf(a, b, c)
+    val averageBrick = a + b + c - minBrick - maxBrick
+    return (maxWall >= averageBrick && minWall >= minBrick)
 }
