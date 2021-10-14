@@ -107,7 +107,7 @@ fun fib(n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    var div: Int = 0
+    var div = 0
     for (i in 2..n) if (n % i == 0) {
         div = i
         break
