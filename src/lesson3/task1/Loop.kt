@@ -91,11 +91,15 @@ fun digitNumber(n: Int): Int {
  * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
-fun fib(n: Int): Int =
-    when {
-        n < 3 -> 1
-        else -> fib(n - 2) + fib(n - 1)
+fun fib(n: Int): Int {
+    var a = 1
+    var b = 1
+    for (i in 2 until n) {
+        b = a + b
+        a = b - a
     }
+    return (b)
+}
 
 /**
  * Простая (2 балла)
@@ -161,6 +165,7 @@ fun isCoPrime(m: Int, n: Int): Boolean {
     var flag = true
     val minimal = minOf(m, n)
     val maximal = maxOf(m, n)
+    if (minimal == 1 || maximal == 1) return true
     if (maximal % minimal == 0) return false
     for (i in 2..sqrt(minimal.toDouble()).toInt()) {
         if (minimal % i == 0) {
