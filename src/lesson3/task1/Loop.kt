@@ -142,16 +142,13 @@ fun collatzSteps(x: Int): Int = TODO()
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int {
-    var result = 0
-    for (i in 1..m * n) {
-        if (i % m == 0 && i % n == 0) {
-            result = i
-            break
-        }
-    }
-    return (result)
+// Вычисляем НОД по алгоритму Евклида
+fun gcd(m: Int, n: Int): Int {
+    return if (n == 0) m
+    else gcd(n, m % n)
 }
+// Вычисляем НОК с помощью НОД
+fun lcm(m: Int, n: Int): Int = m / gcd(m, n) * n
 
 /**
  * Средняя (3 балла)
@@ -161,11 +158,16 @@ fun lcm(m: Int, n: Int): Int {
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-    var flag: Boolean = true
-    for (i in 2..minOf(m, n)) {
-        if (m % i == 0 && n % i == 0) {
-            flag = false
-            break
+    var flag = true
+    val minimal = minOf(m, n)
+    val maximal = maxOf(m, n)
+    if (maximal % minimal == 0) return false
+    for (i in 2..sqrt(minimal.toDouble()).toInt()) {
+        if (minimal % i == 0) {
+            if ((maximal % i == 0) || (maximal % (minimal / i) == 0)) {
+                flag = false
+                break
+            }
         }
     }
     return (flag)
