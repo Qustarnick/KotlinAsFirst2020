@@ -265,7 +265,7 @@ fun squareSequenceDigit(n: Int): Int {
         if (count < n) {
             square = sqr(i)
             count += digitNumber(square)
-        }
+        } else break
     }
     while (count > n) {
         square /= 10
@@ -290,7 +290,7 @@ fun fibSequenceDigit(n: Int): Int {
         if (count < n) {
             fibonacci = fib(i)
             count += digitNumber(fibonacci)
-        }
+        } else break
     }
     while (count > n) {
         fibonacci /= 10

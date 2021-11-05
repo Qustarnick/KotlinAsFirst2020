@@ -137,7 +137,17 @@ fun mean(list: List<Double>): Double = if (list.isNotEmpty()) (list.sum() / list
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun center(list: MutableList<Double>): MutableList<Double> = TODO()
+fun center(list: MutableList<Double>): MutableList<Double> {
+    val summa = list.sum()
+    val size1 = list.size
+    val arithmeticMean = summa / size1
+    return if (list.isNotEmpty()) {
+        for (i in 0 until list.size) {
+            list[i] -= arithmeticMean
+        }
+        list
+    } else list
+}
 
 /**
  * Средняя (3 балла)
