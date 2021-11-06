@@ -156,8 +156,10 @@ fun center(list: MutableList<Double>): MutableList<Double> {
  * представленные в виде списков a и b. Скалярное произведение считать по формуле:
  * C = a1b1 + a2b2 + ... + aNbN. Произведение пустых векторов считать равным 0.
  */
-fun times(a: List<Int>, b: List<Int>): Int = TODO()
-
+fun times(a: List<Int>, b: List<Int>): Int {
+    val red = a.zip(b) { elem1, elem2 -> elem1 * elem2 }
+    return if (red.isNotEmpty()) red.reduce { prev, elem -> prev + elem } else 0
+}
 /**
  * Средняя (3 балла)
  *
