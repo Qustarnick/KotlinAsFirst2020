@@ -3,6 +3,7 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
+import lesson3.task1.isPrime
 import kotlin.math.sqrt
 
 // Урок 4: списки
@@ -120,14 +121,18 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  * по формуле abs = sqrt(a1^2 + a2^2 + ... + aN^2).
  * Модуль пустого вектора считать равным 0.0.
  */
-fun abs(v: List<Double>): Double = TODO()
+fun abs(v: List<Double>): Double {
+
+    return if (v.isEmpty()) 0.0
+    else sqrt(v.sumOf { it * it })
+}
 
 /**
  * Простая (2 балла)
  *
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
-fun mean(list: List<Double>): Double = TODO()
+fun mean(list: List<Double>): Double = if (list.isEmpty()) 0.0 else list.sum() / list.size
 
 /**
  * Средняя (3 балла)
@@ -137,7 +142,16 @@ fun mean(list: List<Double>): Double = TODO()
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun center(list: MutableList<Double>): MutableList<Double> = TODO()
+fun center(list: MutableList<Double>): MutableList<Double> {
+
+    if (list.isEmpty()) return list
+    val mean = list.sum() / list.size
+    for (i in 0 until list.size) {
+        list[i] -= mean
+    }
+    return (list)
+
+}
 
 /**
  * Средняя (3 балла)
@@ -146,7 +160,14 @@ fun center(list: MutableList<Double>): MutableList<Double> = TODO()
  * представленные в виде списков a и b. Скалярное произведение считать по формуле:
  * C = a1b1 + a2b2 + ... + aNbN. Произведение пустых векторов считать равным 0.
  */
-fun times(a: List<Int>, b: List<Int>): Int = TODO()
+fun times(a: List<Int>, b: List<Int>): Int {
+    if (a.isEmpty()) return 0
+    var innerProduct = 0
+    for (i in a.indices) {
+        innerProduct += a[i] * b[i]
+    }
+    return (innerProduct)
+}
 
 /**
  * Средняя (3 балла)
@@ -168,7 +189,13 @@ fun polynom(p: List<Int>, x: Int): Int = TODO()
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun accumulate(list: MutableList<Int>): MutableList<Int> = TODO()
+fun accumulate(list: MutableList<Int>): MutableList<Int> {
+    if (list.isEmpty()) return list
+    for (i in 1 until list.size) {
+        list[i] += list[i - 1]
+    }
+    return (list)
+}
 
 /**
  * Средняя (3 балла)
@@ -177,7 +204,18 @@ fun accumulate(list: MutableList<Int>): MutableList<Int> = TODO()
  * Результат разложения вернуть в виде списка множителей, например 75 -> (3, 5, 5).
  * Множители в списке должны располагаться по возрастанию.
  */
-fun factorize(n: Int): List<Int> = TODO()
+fun factorize(n: Int): List<Int> {
+    var number = n
+    val result = mutableListOf<Int>()
+    for (i in 2..sqrt(number.toDouble()).toInt()) {
+        while (number % i == 0) {
+            result += i
+            number /= i
+        }
+    }
+    if (number != 1) result += number
+    return (result)
+}
 
 /**
  * Сложная (4 балла)
@@ -241,7 +279,76 @@ fun decimalFromString(str: String, base: Int): Int = TODO()
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-fun roman(n: Int): String = TODO()
+
+// Очевидно, в следующей задаче можно заменить повторяющиеся фрагменты с подстановкой различных чисел и символов,
+// но я не смог придумать такую функцию, которая была бы универсальна, поэтому получилось так громоздко.
+
+fun roman(n: Int): String {
+    var number = n
+    var result = ""
+    repeat(number / 1000) {
+        result += "M"
+    }
+    number %= 1000
+
+    if (number / 500 == 1 && number % 500 >= 400) {
+        result += "CM"
+        number %= 900
+    } else {
+        repeat(number / 500) {
+            result += "D"
+        }
+        number %= 500
+    }
+
+    if (number / 100 == 4) {
+        result += "CD"
+        number %= 400
+    } else {
+        repeat(number / 100) {
+            result += "C"
+        }
+        number %= 100
+    }
+
+    if (number / 50 == 1 && number % 50 >= 40) {
+        result += "XC"
+        number %= 90
+    } else {
+        repeat(number / 50) {
+            result += "L"
+        }
+        number %= 50
+    }
+
+    if (number / 10 == 4) {
+        result += "XL"
+        number %= 40
+    } else {
+        repeat(number / 10) {
+            result += "X"
+        }
+        number %= 10
+    }
+
+    if (number == 9) {
+        result += "IX"
+        return result
+    } else {
+        repeat(number / 5) {
+            result += "V"
+        }
+        number %= 5
+    }
+
+    if (number == 4) result += "IV"
+    else when (number) {
+        3 -> result += "III"
+        2 -> result += "II"
+        1 -> result += "I"
+    }
+    return result
+}
 
 /**
  * Очень сложная (7 баллов)
