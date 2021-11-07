@@ -3,6 +3,7 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
+import lesson3.task1.isPrime
 import kotlin.math.sqrt
 
 // Урок 4: списки
@@ -210,7 +211,26 @@ fun factorize(n: Int): List<Int> = TODO()
  * Результат разложения вернуть в виде строки, например 75 -> 3*5*5
  * Множители в результирующей строке должны располагаться по возрастанию.
  */
-fun factorizeToString(n: Int): String = TODO()
+fun factorizeToString(n: Int): String {
+    val list = mutableListOf<Int>()
+    var d = 2
+    var newN = n
+    if (isPrime(n)) list += n
+    else {
+        while (d * d <= newN) {
+            if (newN % d == 0) {
+                list.add(d)
+                newN /= d
+            } else {
+                d += 1
+            }
+        }
+        if (newN > 1) {
+            list.add(newN)
+        }
+    }
+    return list.joinToString(separator = "*")
+}
 
 /**
  * Средняя (3 балла)
