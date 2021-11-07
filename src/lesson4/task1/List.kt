@@ -193,7 +193,14 @@ fun polynom(p: List<Int>, x: Int): Int {
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun accumulate(list: MutableList<Int>): MutableList<Int> = TODO()
+fun accumulate(list: MutableList<Int>): MutableList<Int> {
+    if (list.isEmpty()) return list
+    for ((index, _) in list.withIndex()) {
+        if (index > 0)
+            list[index] += list[index - 1]
+    }
+    return list
+}
 
 /**
  * Средняя (3 балла)
@@ -202,16 +209,7 @@ fun accumulate(list: MutableList<Int>): MutableList<Int> = TODO()
  * Результат разложения вернуть в виде списка множителей, например 75 -> (3, 5, 5).
  * Множители в списке должны располагаться по возрастанию.
  */
-fun factorize(n: Int): List<Int> = TODO()
-
-/**
- * Сложная (4 балла)
- *
- * Разложить заданное натуральное число n > 1 на простые множители.
- * Результат разложения вернуть в виде строки, например 75 -> 3*5*5
- * Множители в результирующей строке должны располагаться по возрастанию.
- */
-fun factorizeToString(n: Int): String {
+fun factorize(n: Int): List<Int> {
     val list = mutableListOf<Int>()
     var d = 2
     var newN = n
@@ -229,8 +227,17 @@ fun factorizeToString(n: Int): String {
             list.add(newN)
         }
     }
-    return list.joinToString(separator = "*")
+    return list
 }
+
+/**
+ * Сложная (4 балла)
+ *
+ * Разложить заданное натуральное число n > 1 на простые множители.
+ * Результат разложения вернуть в виде строки, например 75 -> 3*5*5
+ * Множители в результирующей строке должны располагаться по возрастанию.
+ */
+fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*")
 
 /**
  * Средняя (3 балла)
