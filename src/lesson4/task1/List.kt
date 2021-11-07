@@ -157,9 +157,10 @@ fun center(list: MutableList<Double>): MutableList<Double> {
  * C = a1b1 + a2b2 + ... + aNbN. Произведение пустых векторов считать равным 0.
  */
 fun times(a: List<Int>, b: List<Int>): Int {
-    val red = a.zip(b) { elem1, elem2 -> elem1 * elem2 }
-    return if (red.isNotEmpty()) red.reduce { prev, elem -> prev + elem } else 0
+    val result = a.zip(b) { elem1, elem2 -> elem1 * elem2 }
+    return if (result.isNotEmpty()) result.sum() else 0
 }
+
 /**
  * Средняя (3 балла)
  *
@@ -168,7 +169,18 @@ fun times(a: List<Int>, b: List<Int>): Int {
  * Коэффициенты многочлена заданы списком p: (p0, p1, p2, p3, ..., pN).
  * Значение пустого многочлена равно 0 при любом x.
  */
-fun polynom(p: List<Int>, x: Int): Int = TODO()
+fun polynom(p: List<Int>, x: Int): Int {
+    var newX = x
+    val list = mutableListOf<Int>()
+    return if (p.isNotEmpty()) {
+        p.forEach { list.add(it) }
+        for ((index, _) in list.withIndex().drop(1)) {
+            list[index] *= newX
+            newX *= x
+        }
+        list.sum()
+    } else 0
+}
 
 /**
  * Средняя (3 балла)
