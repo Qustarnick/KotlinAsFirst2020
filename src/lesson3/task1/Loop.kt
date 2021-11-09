@@ -107,12 +107,8 @@ fun fib(n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    var div = 0
-    for (i in 2..n) if (n % i == 0) {
-        div = i
-        break
-    }
-    return (div)
+    for (i in 2..sqrt(n.toDouble()).toInt()) if (n % i == 0) return i
+    return n
 }
 
 /**
@@ -151,6 +147,7 @@ fun gcd(m: Int, n: Int): Int {
     return if (n == 0) m
     else gcd(n, m % n)
 }
+
 // Вычисляем НОК с помощью НОД
 fun lcm(m: Int, n: Int): Int = m / gcd(m, n) * n
 
@@ -161,22 +158,7 @@ fun lcm(m: Int, n: Int): Int = m / gcd(m, n) * n
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean {
-    var flag = true
-    val minimal = minOf(m, n)
-    val maximal = maxOf(m, n)
-    if (minimal == 1 || maximal == 1) return true
-    if (maximal % minimal == 0) return false
-    for (i in 2..sqrt(minimal.toDouble()).toInt()) {
-        if (minimal % i == 0) {
-            if ((maximal % i == 0) || (maximal % (minimal / i) == 0)) {
-                flag = false
-                break
-            }
-        }
-    }
-    return (flag)
-}
+fun isCoPrime(m: Int, n: Int): Boolean = gcd(m, n) == 1
 
 /**
  * Средняя (3 балла)
@@ -255,8 +237,7 @@ fun squareSequenceDigit(n: Int): Int {
         i++
         totalDigitNmb += digitNumber(sqr(i))
     }
-    val degree: Int = 10.0.pow(totalDigitNmb - n).toInt()
-    return (if (totalDigitNmb > n) sqr(i) / degree % 10 else sqr(i) % 10)
+    return sqr(i) / 10.0.pow(totalDigitNmb - n).toInt() % 10
 }
 
 /**

@@ -122,11 +122,7 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  * по формуле abs = sqrt(a1^2 + a2^2 + ... + aN^2).
  * Модуль пустого вектора считать равным 0.0.
  */
-fun abs(v: List<Double>): Double {
-
-    return if (v.isEmpty()) 0.0
-    else sqrt(v.sumOf { it * it })
-}
+fun abs(v: List<Double>): Double = sqrt(v.sumOf { it * it })
 
 /**
  * Простая (2 балла)
@@ -144,11 +140,10 @@ fun mean(list: List<Double>): Double = if (list.isEmpty()) 0.0 else list.sum() /
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun center(list: MutableList<Double>): MutableList<Double> {
-
+    val meanList = mean(list)
     if (list.isEmpty()) return list
-    val mean = list.sum() / list.size
     for (i in 0 until list.size) {
-        list[i] -= mean
+        list[i] -= meanList
     }
     return (list)
 
@@ -162,12 +157,11 @@ fun center(list: MutableList<Double>): MutableList<Double> {
  * C = a1b1 + a2b2 + ... + aNbN. Произведение пустых векторов считать равным 0.
  */
 fun times(a: List<Int>, b: List<Int>): Int {
-    if (a.isEmpty()) return 0
     var innerProduct = 0
     for (i in a.indices) {
         innerProduct += a[i] * b[i]
     }
-    return (innerProduct)
+    return innerProduct
 }
 
 /**
@@ -191,11 +185,10 @@ fun polynom(p: List<Int>, x: Int): Int = TODO()
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun accumulate(list: MutableList<Int>): MutableList<Int> {
-    if (list.isEmpty()) return list
     for (i in 1 until list.size) {
         list[i] += list[i - 1]
     }
-    return (list)
+    return list
 }
 
 /**
@@ -215,7 +208,7 @@ fun factorize(n: Int): List<Int> {
         }
     }
     if (number != 1) result += number
-    return (result)
+    return result
 }
 
 /**
@@ -272,11 +265,12 @@ fun decimal(digits: List<Int>, base: Int): Int = TODO()
  */
 
 fun decimalFromString(str: String, base: Int): Int {
-    val alphabet = ('a'..'z').toList()
     var result = 0
+    var degree = str.length - 1
     for (digit in str.indices) {
-        result += if (str[digit].isDigit()) ((str[digit].code - '0'.code) * base.toDouble().pow(str.length - digit - 1)).toInt()
-        else ((10 + alphabet.indexOf(str[digit])) * base.toDouble().pow(str.length - digit - 1)).toInt()
+        result += if (str[digit].isDigit()) ((str[digit] - '0') * base.toDouble().pow(degree)).toInt()
+        else ((10 + (str[digit] - 'a')) * base.toDouble().pow(degree)).toInt()
+        degree--
     }
     return (result)
 }
