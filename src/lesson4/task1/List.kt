@@ -3,7 +3,6 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
-import lesson3.task1.isPrime
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -284,75 +283,20 @@ fun decimalFromString(str: String, base: Int): Int {
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
 
-// Очевидно, в следующей задаче можно заменить повторяющиеся фрагменты с подстановкой различных чисел и символов,
-// но я не смог придумать такую функцию, которая была бы универсальна, поэтому получилось так громоздко.
-
 fun roman(n: Int): String {
     var number = n
+    val arabic = arrayOf(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
+    val roman = listOf("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
     var result = ""
-    repeat(number / 1000) {
-        result += "M"
-    }
-    number %= 1000
-
-    if (number / 500 == 1 && number % 500 >= 400) {
-        result += "CM"
-        number %= 900
-    } else {
-        repeat(number / 500) {
-            result += "D"
+    for (i in arabic.indices) {
+        while (number >= arabic[i]) {
+            result += roman[i]
+            number -= arabic[i]
         }
-        number %= 500
-    }
-
-    if (number / 100 == 4) {
-        result += "CD"
-        number %= 400
-    } else {
-        repeat(number / 100) {
-            result += "C"
-        }
-        number %= 100
-    }
-
-    if (number / 50 == 1 && number % 50 >= 40) {
-        result += "XC"
-        number %= 90
-    } else {
-        repeat(number / 50) {
-            result += "L"
-        }
-        number %= 50
-    }
-
-    if (number / 10 == 4) {
-        result += "XL"
-        number %= 40
-    } else {
-        repeat(number / 10) {
-            result += "X"
-        }
-        number %= 10
-    }
-
-    if (number == 9) {
-        result += "IX"
-        return result
-    } else {
-        repeat(number / 5) {
-            result += "V"
-        }
-        number %= 5
-    }
-
-    if (number == 4) result += "IV"
-    else when (number) {
-        3 -> result += "III"
-        2 -> result += "II"
-        1 -> result += "I"
     }
     return result
 }
+
 
 /**
  * Очень сложная (7 баллов)
