@@ -144,7 +144,7 @@ fun center(list: MutableList<Double>): MutableList<Double> {
     for (i in 0 until list.size) {
         list[i] -= meanList
     }
-    return (list)
+    return list
 
 }
 
@@ -271,7 +271,7 @@ fun decimalFromString(str: String, base: Int): Int {
         else ((10 + (str[digit] - 'a')) * base.toDouble().pow(degree)).toInt()
         degree--
     }
-    return (result)
+    return result
 }
 
 /**

@@ -257,5 +257,5 @@ fun fibSequenceDigit(n: Int): Int {
         totalDigitNmb += digitNumber(fib(i))
     }
     val degree: Int = 10.0.pow(totalDigitNmb - n).toInt()
-    return (if (totalDigitNmb > n) fib(i) / degree % 10 else fib(i) % 10)
+    return fib(i) / degree % 10
 }
