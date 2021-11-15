@@ -2,6 +2,8 @@
 
 package lesson5.task1
 
+import kotlin.time.seconds
+
 // Урок 5: ассоциативные массивы и множества
 // Максимальное количество баллов = 14
 // Рекомендуемое количество баллов = 9
@@ -173,7 +175,9 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *   averageStockPrice(listOf("MSFT" to 100.0, "MSFT" to 200.0, "NFLX" to 40.0))
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
-fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> = TODO()
+
+fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> =
+    stockPrices.groupByTo(mutableMapOf(), { it.first }, { it.second }).mapValues { it.value.average() }
 
 /**
  * Средняя (4 балла)
@@ -190,8 +194,25 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *     "печенье"
  *   ) -> "Мария"
  */
-fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? = TODO()
 
+fun main() {
+
+    fun findCheapestStuffTest(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
+        val desiredKind = stuff.filter { it.value.first == kind }
+        return (desiredKind.minByOrNull { it.value.second })?.key
+    }
+    findCheapestStuffTest(mapOf("Мария" to ("печенье" to 20.0), "Орео" to ("печенье" to 100.0)), "торт")
+}
+
+fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
+    val desiredKind = stuff.filter { it.value.first == kind }
+    return (desiredKind.minByOrNull { it.value.second })?.key
+}
+
+/** {
+var desiredKind = stuff.filter { it.value.first == kind }
+println(desiredKind)
+ */
 /**
  * Средняя (3 балла)
  *
@@ -284,7 +305,15 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   findSumOfTwo(listOf(1, 2, 3), 4) -> Pair(0, 2)
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
-fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
+
+fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
+    val set = mutableSetOf<Int>()
+    set.addAll(list)
+    for (i in 0..set.count() / 2) {
+        if (number - i in set) return Pair(list.indexOf(i), list.indexOf(number - i))
+    }
+    return Pair(-1, -1)
+}
 
 /**
  * Очень сложная (8 баллов)
