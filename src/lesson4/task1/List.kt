@@ -315,11 +315,58 @@ fun roman(n: Int): String {
 fun russian(n: Int): String {
     var n1 = n
     val number = mutableListOf<Int>()
+    var result = mutableListOf<String>()
+    val list1000 = mutableListOf<String>()
+    val units = listOf("одна", "две", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
     while (n1 > 0) {
         number.add(0, n1 % 10)
         n1 /= 10
     }
-    println(number)
+    if (number.size > 3) {
+        for ((index, element) in number.withIndex()) {
+            if ((number.size == 5 && n / 1000 in 11..19) || (number.size == 6 && (n / 1000 in 11..19))) {
+                list1000.add("тысяч")
+            } else if ((number.size == 4 && index == 0) || (number.size == 5 && index == 1) || (number.size == 6 && index == 2)) {
+                when (element) {
+                    1 -> list1000.add("тысяча")
+                    2, 3, 4 -> list1000.add("тысячи")
+                    else -> list1000.add("тысяч")
+                }
+            }
+        }
+    }
+    if (n == 0) {
+        result.add("ноль")
+    }
+    if (number.size < 4) {
+        result.add(numbers(n))
+    } else if (number.size == 4) {
+        for ((index, element) in number.withIndex()) {
+            if (index == 0) {
+                result.add(units[element - 1])
+                result.add(list1000[0])
+                result.add(numbers(n % 1000))
+            }
+        }
+    } else if (number.size >= 5) {
+        result.add(numbers(n / 1000))
+        result = result.joinToString().split(" ").toMutableList()
+        for (index in result.indices) {
+            if (result[index] == "один") {
+                result[index] = "одна"
+            } else if (result[index] == "два") {
+                result[index] = "две"
+            }
+        }
+        result.add(list1000[0])
+        if (numbers(n % 1000).isNotEmpty()) result.add(numbers(n % 1000))
+    }
+    return result.joinToString(separator = " ")
+}
+
+fun numbers(n: Int): String {
+    var n1 = n
+    val number = mutableListOf<Int>()
     val result = mutableListOf<String>()
     val list1 = listOf("один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
     val list11 = listOf(
@@ -346,49 +393,31 @@ fun russian(n: Int): String {
     )
     val list100 =
         listOf("сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот")
-    val list1000 = listOf("тысяча", "тысячи", "тысяч")
-    val units = listOf("", "одна", "две", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
+    while (n1 > 0) {
+        number.add(0, n1 % 10)
+        n1 /= 10
+    }
     while (number.size > 0) {
         for ((index, element) in number.withIndex()) {
             if (number[index] == 0) continue
             if (number.size == 1 && element != 0) {
                 result.add(list1[element - 1])
             } else if (number.size == 2) {
-                if (n !in 11..19) {
-                    if (index == 0) {
-                        result.add(list10[element - 1])
-
-                    }
-                } else {
+                if (n % 100 in 11..19) {
                     if (index == 1) {
                         result.add(list11[element % 10 - 1])
                         return result.joinToString(separator = " ")
                     }
-                }
-            } else if (number.size == 3) {
-                if (index == 0) {
-                    result.add(list100[element - 1])
-                }
-            } else if (number.size >= 4) {
-                if ((number[0] == 1 && number.size == 4) || (number[1] == 1 && number.size == 5)) {
-                    if (number.size == 5) {
-                        if (index == 0) result.add(list10[element - 1])
+                } else {
+                    if (index == 0) {
+                        result.add(list10[element - 1])
                     }
-                    if (number.size == 4) result.add(units[element])
-                    result.add(list1000[0])
-                } else if ((number[0] in 2..4 && number.size == 4) || (number[1] in 2..4 && number.size == 5)) {
-                    result.add(units[element])
-                    result.add(list1000[1])
-                } else if ((number[0] in 5..9 && number.size == 4) || (number[1] in 5..9 && number.size == 5)) {
-                    result.add(units[element])
-                    result.add(list1000[2])
                 }
-                break
+            } else if (number.size == 3 && index == 0) {
+                result.add(list100[element - 1])
             }
         }
         number.removeAt(0)
     }
-//не доделана
-    println(result)
     return result.joinToString(separator = " ")
 }
