@@ -324,7 +324,7 @@ fun russian(n: Int): String {
     }
     if (number.size > 3) {
         for ((index, element) in number.withIndex()) {
-            if ((number.size == 5 && n / 1000 in 11..19) || (number.size == 6 && (n / 1000 in 11..19))) {
+            if ((number.size == 5 && n / 1000 in 11..19) || (number.size == 6 && (n / 1000 % 100 in 11..19))) {
                 list1000.add("тысяч")
             } else if ((number.size == 4 && index == 0) || (number.size == 5 && index == 1) || (number.size == 6 && index == 2)) {
                 when (element) {
