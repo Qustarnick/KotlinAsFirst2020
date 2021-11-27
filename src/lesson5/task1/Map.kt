@@ -120,13 +120,8 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
  */
 fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
     var res = false
-    for (entry in a) {
-        for (entry1 in b) {
-            if (entry == entry1) {
-                res = true
-                break
-            }
-        }
+    for ((key, value) in a) {
+        if (b.containsKey(key) && b[key] == value) res = true
     }
     return res
 }
@@ -146,7 +141,9 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
  *     -> a changes to mutableMapOf() aka becomes empty
  */
 fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
-    for (key in b.keys) if (containsIn(a, b)) a.remove(key)
+    b.forEach { (key, value) ->
+        if (containsIn(a, b) && a[key] == value) a.remove(key)
+    }
 }
 
 /**
@@ -229,7 +226,27 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *     "печенье"
  *   ) -> "Мария"
  */
-fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? = TODO()
+fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
+    var res = ""
+    var minPrice = Double.MAX_VALUE
+    val list = mutableMapOf<String, MutableList<Double>>()
+    stuff.forEach { (key, value) ->
+        if (value.first == kind) {
+            if (list[key].isNullOrEmpty())
+                list[key] = mutableListOf(value.second)
+            else list[key]?.add(value.second)
+        }
+    }
+    for ((key, value) in list) {
+        for (element in value) {
+            if (element <= minPrice) {
+                minPrice = element
+                res = key
+            }
+        }
+    }
+    return res.ifEmpty { null }
+}
 
 /**
  * Средняя (3 балла)
