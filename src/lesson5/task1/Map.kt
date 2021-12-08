@@ -340,27 +340,41 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   findSumOfTwo(listOf(1, 2, 3), 4) -> Pair(0, 2)
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
-fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
+fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
+    var result = Pair<Int, Int>(-1, -1)
+    val resList = list.filter { it <= number }
+    for (firstNumber in resList.indices) {
+        for (secondNumber in resList.minus(resList[firstNumber])) {
+            if (resList[firstNumber] + secondNumber == number) {
+                result =
+                    if (firstNumber > resList.indexOf(secondNumber)) Pair(resList.indexOf(secondNumber), firstNumber)
+                    else Pair(firstNumber, resList.indexOf(secondNumber))
+                break
+            }
+        }
+    }
+    return result
+}
 
-/**
- * Очень сложная (8 баллов)
- *
- * Входными данными является ассоциативный массив
- * "название сокровища"-"пара (вес сокровища, цена сокровища)"
- * и вместимость вашего рюкзака.
- * Необходимо вернуть множество сокровищ с максимальной суммарной стоимостью,
- * которые вы можете унести в рюкзаке.
- *
- * Перед решением этой задачи лучше прочитать статью Википедии "Динамическое программирование".
- *
- * Например:
- *   bagPacking(
- *     mapOf("Кубок" to (500 to 2000), "Слиток" to (1000 to 5000)),
- *     850
- *   ) -> setOf("Кубок")
- *   bagPacking(
- *     mapOf("Кубок" to (500 to 2000), "Слиток" to (1000 to 5000)),
- *     450
- *   ) -> emptySet()
- */
-fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> = TODO()
+    /**
+     * Очень сложная (8 баллов)
+     *
+     * Входными данными является ассоциативный массив
+     * "название сокровища"-"пара (вес сокровища, цена сокровища)"
+     * и вместимость вашего рюкзака.
+     * Необходимо вернуть множество сокровищ с максимальной суммарной стоимостью,
+     * которые вы можете унести в рюкзаке.
+     *
+     * Перед решением этой задачи лучше прочитать статью Википедии "Динамическое программирование".
+     *
+     * Например:
+     *   bagPacking(
+     *     mapOf("Кубок" to (500 to 2000), "Слиток" to (1000 to 5000)),
+     *     850
+     *   ) -> setOf("Кубок")
+     *   bagPacking(
+     *     mapOf("Кубок" to (500 to 2000), "Слиток" to (1000 to 5000)),
+     *     450
+     *   ) -> emptySet()
+     */
+    fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> = TODO()

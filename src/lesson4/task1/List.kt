@@ -341,13 +341,9 @@ fun russian(n: Int): String {
     if (number.size < 4) {
         result.add(numbers(n))
     } else if (number.size == 4) {
-        for ((index, element) in number.withIndex()) {
-            if (index == 0) {
-                result.add(units[element - 1])
-                result.add(list1000[0])
-                result.add(numbers(n % 1000))
-            }
-        }
+        result.add(units[number[0] - 1])
+        result.add(list1000[0])
+        result.add(numbers(n % 1000))
     } else if (number.size >= 5) {
         result.add(numbers(n / 1000))
         result = result.joinToString().split(" ").toMutableList()
