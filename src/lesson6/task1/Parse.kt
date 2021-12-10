@@ -2,8 +2,7 @@
 
 package lesson6.task1
 
-import java.lang.IndexOutOfBoundsException
-import java.lang.NumberFormatException
+import lesson2.task2.daysInMonth
 
 // Урок 6: разбор строк, исключения
 // Максимальное количество баллов = 13
@@ -65,6 +64,7 @@ fun main() {
     }
 }
 
+
 /**
  * Средняя (4 балла)
  *
@@ -76,33 +76,39 @@ fun main() {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-
 fun dateStrToDigit(str: String): String {
-    val date = str.split(" ")
-    if (date.size != 3) return ""
-    val day = date[0].toIntOrNull()
-    val year = date[2].toIntOrNull() ?: return ""
-    val month = when (date[1]) {
-        "января" -> "01"
-        "февраля" -> "02"
-        "марта" -> "03"
-        "апреля" -> "04"
-        "мая" -> "05"
-        "июня" -> "06"
-        "июля" -> "07"
-        "августа" -> "08"
-        "сентября" -> "09"
-        "октября" -> "10"
-        "ноября" -> "11"
-        "декабря" -> "12"
-        else -> ""
+    val parts = str.split(" ")
+    val number = mutableListOf<Int>()
+    var result = ""
+    val month = mapOf<String, Int>(
+        "января" to 1,
+        "февраля" to 2,
+        "марта" to 3,
+        "апреля" to 4,
+        "мая" to 5,
+        "июня" to 6,
+        "июля" to 7,
+        "августа" to 8,
+        "сентября" to 9,
+        "октября" to 10,
+        "ноября" to 11,
+        "декабря" to 12
+    )
+
+    for (part in parts.indices) {
+        if (part == 1 && month.contains(parts[part])) {
+            month[parts[1]]?.let { number.add(it) }
+        } else result = ""
+        if (part != 1) number.add(parts[part].toInt())
     }
-    if (month == "02" && day in 1..28 ||
-        month == "02" && day == 29 && (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) ||
-        month in listOf("01", "03", "05", "07", "08", "10", "12") && day in 1..31 ||
-        month !in listOf("02", "") && day in 1..30
-    ) return String.format("%02d.%s.%s", day, month, date[2])
-    return ""
+    if (number.size < 3) return ""
+    for (i in number.indices) {
+        result =
+            if (number[0] <= daysInMonth(number[1], number[2])) {
+                String.format("%02d.%02d.%02d", number[0], number[1], number[2])
+            } else ""
+    }
+    return result
 }
 
 /**
@@ -191,23 +197,7 @@ fun firstDuplicateIndex(str: String): Int = TODO()
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть больше нуля либо равны нулю.
  */
-fun mostExpensive(description: String): String {
-    val shoppingList = description.split(" ", "; ")
-    val shoppingMap = mutableMapOf<String, Double>()
-    try {
-
-        for (i in shoppingList.indices step 2) {
-            shoppingMap[shoppingList[i]] = shoppingList[i + 1].toDouble()
-        }
-        if (shoppingMap.values.minOrNull()!! < 0) return ""
-
-    } catch (e: IndexOutOfBoundsException) {
-        return ""
-    } catch (e: NumberFormatException) {
-        return ""
-    }
-    return shoppingMap.maxByOrNull { it.value }!!.key
-}
+fun mostExpensive(description: String): String = TODO()
 
 /**
  * Сложная (6 баллов)
@@ -220,24 +210,7 @@ fun mostExpensive(description: String): String {
  *
  * Вернуть -1, если roman не является корректным римским числом
  */
-
-fun fromRoman(roman: String): Int {
-    val alpha = mapOf('I' to 1, 'V' to 5, 'X' to 10, 'L' to 50, 'C' to 100, 'D' to 500, 'M' to 1000)
-    if (roman.isEmpty()) return -1
-    for (letter in roman) {
-        if (letter !in alpha) return -1
-    }
-    var previous: Int
-    var current = 0
-    var result = 0
-    for (digit in roman) {
-        previous = current
-        current = alpha[digit] ?: return -1
-        result += if (current > previous) current - 2 * previous
-        else current
-    }
-    return result
-}
+fun fromRoman(roman: String): Int = TODO()
 
 /**
  * Очень сложная (7 баллов)
