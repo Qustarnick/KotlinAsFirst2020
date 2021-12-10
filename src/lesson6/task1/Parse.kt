@@ -94,11 +94,11 @@ fun dateStrToDigit(str: String): String {
         "ноября" to 11,
         "декабря" to 12
     )
-    if (str.isEmpty() || !str.any { it.isDigit() }) return ""
+    if (str.isEmpty() || !str.any { it.isDigit() } || parts.size < 3) return ""
     for (part in parts.indices) {
         if (part == 1 && month.contains(parts[part])) {
             month[parts[1]]?.let { number.add(it) }
-        } else result = ""
+        }
         if (part != 1) number.add(parts[part].toInt())
     }
     if (number.size < 3) return ""
