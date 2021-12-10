@@ -105,7 +105,7 @@ fun dateStrToDigit(str: String): String {
     for (i in number.indices) {
         result =
             if (number[0] <= daysInMonth(number[1], number[2])) {
-                String.format("%02d.%02d.%02d", number[0], number[1], number[2])
+                String.format("%02d.%02d.%d", number[0], number[1], number[2])
             } else ""
     }
     return result
