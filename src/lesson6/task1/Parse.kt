@@ -94,20 +94,26 @@ fun dateStrToDigit(str: String): String {
         "ноября" to 11,
         "декабря" to 12
     )
-    if (str.isEmpty() || !str.any { it.isDigit() } || parts.size < 3) return ""
-    for (part in parts.indices) {
-        if (part == 1 && month.contains(parts[part])) {
-            month[parts[1]]?.let { number.add(it) }
+    val occurrencesCount = str.replace(" ", "  ").length - str.length
+    if (occurrencesCount != 2) return ""
+    try {
+        for (part in parts.indices) {
+            if (part == 1 && month.contains(parts[part])) {
+                month[parts[1]]?.let { number.add(it) }
+            }
+            if (part != 1) number.add(parts[part].toInt())
         }
-        if (part != 1) number.add(parts[part].toInt())
+    } catch (e: NumberFormatException) {
+        return ""
     }
-    if (number.size < 3) return ""
-    for (i in number.indices) {
-        result =
-            if (number[0] <= daysInMonth(number[1], number[2])) {
-                String.format("%02d.%02d.%d", number[0], number[1], number[2])
-            } else ""
-    }
+    if (number.size == 3) {
+        for (i in number.indices) {
+            result =
+                if (number[0] <= daysInMonth(number[1], number[2])) {
+                    String.format("%02d.%02d.%d", number[0], number[1], number[2])
+                } else ""
+        }
+    } else return ""
     return result
 }
 
@@ -121,7 +127,51 @@ fun dateStrToDigit(str: String): String {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
  * входными данными.
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    val parts = digital.split(".")
+    val number = mutableListOf<Any>()
+    var result = ""
+    var days = 0
+    val month = mapOf<Int, String>(
+        1 to "января",
+        2 to "февраля",
+        3 to "марта",
+        4 to "апреля",
+        5 to "мая",
+        6 to "июня",
+        7 to "июля",
+        8 to "августа",
+        9 to "сентября",
+        10 to "октября",
+        11 to "ноября",
+        12 to "декабря"
+    )
+    val occurrencesCount = digital.length - digital.replace(".", "").length
+    if (occurrencesCount != 2) return ""
+    try {
+        for (i in parts.indices) {
+            val num = parts[i].toInt()
+            if (i == 1 && month.contains(num)) {
+                days = num
+                month[num]?.let { number.add(it) }
+            }
+            if (i != 1) number.add(num)
+        }
+    } catch (e: NumberFormatException) {
+        return ""
+    }
+
+    if (number.size == 3) {
+        for (i in number.indices) {
+            if (i == 1 && days !in 1..12) return ""
+            else result =
+                if (number[0] as Int <= daysInMonth(days, number[2] as Int)) {
+                    "${number[0]} ${number[1]} ${number[2]}"
+                } else return ""
+        }
+    } else return ""
+    return result
+}
 
 /**
  * Средняя (4 балла)
