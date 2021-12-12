@@ -212,7 +212,29 @@ fun bestLongJump(jumps: String): Int = TODO()
  * При нарушении формата входной строки, а также в случае отсутствия удачных попыток,
  * вернуть -1.
  */
-fun bestHighJump(jumps: String): Int = TODO()
+fun bestHighJump(jumps: String): Int {
+    try {
+        val numbers = mutableListOf<Int>()
+        val signs = mutableListOf<String>()
+        val parts = jumps.split(" ")
+        var result = -1
+        for (element in parts) {
+            try {
+                numbers.add(element.toInt())
+            } catch (nfe: NumberFormatException) {
+                signs.add(element)
+            }
+        }
+        for (index in numbers.indices) {
+            println("index = $index, numbers = ${numbers[index]}, elem = ${signs[index]}")
+            if (numbers[index] > result && signs[index].contains("+")) result = numbers[index]
+
+        }
+        return result
+    } catch (e: Exception) {
+        return -1
+    }
+}
 
 /**
  * Сложная (6 баллов)
