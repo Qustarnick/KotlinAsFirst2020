@@ -224,45 +224,48 @@ fun bestHighJump(jumps: String): Int = TODO()
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
 fun plusMinus(expression: String): Int {
-    if (expression.isEmpty()) throw IllegalArgumentException("Empty expression")
-    val parts = expression.trim().split(" ")
-    val numbers = mutableListOf<Int>()
-    val signs = mutableListOf<String>()
-    val mistake = "+-"
-    if (parts.size % 2 != 1) throw IllegalArgumentException("The size does not match the format")
-    for (i in parts.indices) {
-        if (i % 2 == 0) {
-            if (parts[i] in mistake) throw IllegalArgumentException("Invalid format")
+    try {
+        val parts = expression.trim().split(" ")
+        val numbers = mutableListOf<Int>()
+        val signs = mutableListOf<String>()
+        val mistake = "+-"
+        if (parts.size % 2 != 1) throw IllegalArgumentException("The size does not match the format")
+        for (i in parts.indices) {
+            if (i % 2 == 0) {
+                if (parts[i] in mistake) throw IllegalArgumentException("Invalid format")
+            }
         }
-    }
 
-    for (element in parts) {
-        try {
-            if ((element.contains("+") || element.contains("-")) && element !in mistake) throw IllegalArgumentException(
-                "Invalid characters"
-            )
-            numbers.add(element.toInt())
-        } catch (nfe: NumberFormatException) {
-            signs.add(element)
+        for (element in parts) {
+            try {
+                if ((element.contains("+") || element.contains("-")) && element !in mistake) throw IllegalArgumentException(
+                    "Invalid characters"
+                )
+                numbers.add(element.toInt())
+            } catch (nfe: NumberFormatException) {
+                signs.add(element)
+            }
         }
-    }
-    var result = numbers[0]
-    for (i in numbers.indices) {
-        for (index in signs.indices) {
-            if (i != 0) {
-                if (signs[index] == "+") {
-                    result += numbers[i]
-                    signs.removeFirst()
-                    break
-                } else {
-                    result -= numbers[i]
-                    signs.removeFirst()
-                    break
+        var result = numbers[0]
+        for (i in numbers.indices) {
+            for (index in signs.indices) {
+                if (i != 0) {
+                    if (signs[index] == "+") {
+                        result += numbers[i]
+                        signs.removeFirst()
+                        break
+                    } else {
+                        result -= numbers[i]
+                        signs.removeFirst()
+                        break
+                    }
                 }
             }
         }
+        return result
+    } catch (e: Exception) {
+        throw IllegalArgumentException()
     }
-    return result
 }
 
 /**
