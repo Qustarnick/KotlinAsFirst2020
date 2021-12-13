@@ -195,14 +195,6 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *   ) -> "Мария"
  */
 
-fun main() {
-
-    fun findCheapestStuffTest(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
-        val desiredKind = stuff.filter { it.value.first == kind }
-        return (desiredKind.minByOrNull { it.value.second })?.key
-    }
-    findCheapestStuffTest(mapOf("Мария" to ("печенье" to 20.0), "Орео" to ("печенье" to 100.0)), "торт")
-}
 
 fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
     val desiredKind = stuff.filter { it.value.first == kind }
@@ -336,4 +328,33 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
  *     450
  *   ) -> emptySet()
  */
-fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> = TODO()
+fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
+    val names = treasures.keys.toList()
+
+    var memTable = mutableListOf<IntArray>()
+    for (i in 0..names.size) {
+        memTable.add(i, IntArray(capacity + 1))
+    }
+
+    for (name in 1..names.size) {
+        for (weight in 1..capacity) {
+            if (weight >= treasures[names[name - 1]]!!.first) {
+                memTable[name][weight] = maxOf(
+                    memTable[name - 1][weight],
+                    memTable[name - 1][weight - treasures[names[name - 1]]!!.first] + treasures[names[name - 1]]!!.second
+                )
+            } else {
+                memTable[name][weight] = memTable[name - 1][weight]
+            }
+        }
+    }
+    var weight = capacity
+    var result = mutableSetOf<String>()
+    for (name in names.size downTo 1) {
+        if (memTable[name][weight] != memTable[name - 1][weight]) {
+            result.add(names[name - 1])
+            weight -= treasures[names[name - 1]]!!.first
+        }
+    }
+    return result
+}

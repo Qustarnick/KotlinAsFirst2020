@@ -322,10 +322,10 @@ class Tests {
     @Tag("8")
     fun bagPacking() {
         assertEquals(
-            setOf("Кубок"),
+            setOf("Кубок", "Слиток"),
             bagPacking(
-                mapOf("Кубок" to (500 to 2000), "Слиток" to (1000 to 5000)),
-                850
+                mapOf("Кубок" to (50 to 2000), "Слиток" to (100 to 5000), "Ожерелье" to (350 to 3000)),
+                185
             )
         )
         assertEquals(
