@@ -117,6 +117,7 @@ class Tests {
         assertEquals("Вино", mostExpensive("Вино 255.0"))
     }
 
+
     @Test
     @Tag("6")
     fun fromRoman() {
@@ -126,6 +127,8 @@ class Tests {
         assertEquals(694, fromRoman("DCXCIV"))
         assertEquals(49, fromRoman("XLIX"))
         assertEquals(-1, fromRoman("Z"))
+        assertEquals(-1, fromRoman("123"))
+        assertEquals(-1, fromRoman("xliv"))
     }
 
     @Test
