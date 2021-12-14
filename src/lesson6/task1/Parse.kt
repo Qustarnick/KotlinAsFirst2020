@@ -78,7 +78,7 @@ println("Достигнут <конец файла> в процессе чтен
  */
 
 fun dateStrToDigit(str: String): String {
-    var date = str.split(" ")
+    val date = str.split(" ")
     try {
         val day = date[0].toIntOrNull()
         val month = when (date[1]) {
@@ -192,7 +192,7 @@ fun firstDuplicateIndex(str: String): Int = TODO()
  */
 fun mostExpensive(description: String): String {
     val shoppingList = description.split(" ", "; ")
-    var shoppingMap = mutableMapOf<String, Double>()
+    val shoppingMap = mutableMapOf<String, Double>()
     try {
 
         for (i in shoppingList.indices step 2) {
