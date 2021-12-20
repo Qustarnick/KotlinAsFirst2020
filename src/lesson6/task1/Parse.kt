@@ -205,27 +205,21 @@ fun bestLongJump(jumps: String): Int = TODO()
  * вернуть -1.
  */
 fun bestHighJump(jumps: String): Int {
-    try {
-        val numbers = mutableListOf<Int>()
-        val signs = mutableListOf<String>()
-        val parts = jumps.split(" ")
-        var result = -1
+    val numbers = mutableListOf<Int>()
+    val signs = mutableListOf<String>()
+    val parts = jumps.split(" ")
+    var result = -1
+    if (Regex("""[0-9 +%-]+""").matches(jumps)) {
         for (element in parts) {
-            try {
-                numbers.add(element.toInt())
-            } catch (nfe: NumberFormatException) {
-                signs.add(element)
-            }
+            if (Regex("""[0-9]+""").matches(element)) numbers.add(element.toInt())
+            else signs.add(element)
         }
-        for (index in numbers.indices) {
-            println("index = $index, numbers = ${numbers[index]}, elem = ${signs[index]}")
-            if (numbers[index] > result && signs[index].contains("+")) result = numbers[index]
+    } else return -1
+    for (index in numbers.indices) {
+        if (numbers[index] > result && signs[index].contains("+")) result = numbers[index]
 
-        }
-        return result
-    } catch (e: Exception) {
-        return -1
     }
+    return result
 }
 
 /**
@@ -238,48 +232,41 @@ fun bestHighJump(jumps: String): Int {
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
 fun plusMinus(expression: String): Int {
-    try {
-        val parts = expression.trim().split(" ")
-        val numbers = mutableListOf<Int>()
-        val signs = mutableListOf<String>()
-        val mistake = "+-"
-        if (parts.size % 2 != 1) throw IllegalArgumentException("The size does not match the format")
-        for (i in parts.indices) {
-            if (i % 2 == 0) {
-                if (parts[i] in mistake) throw IllegalArgumentException("Invalid format")
-            }
+    val parts = expression.trim().split(" ")
+    val numbers = mutableListOf<Int>()
+    val signs = mutableListOf<String>()
+    val mistake = "+-"
+    if (parts.size % 2 != 1) throw IllegalArgumentException("The size does not match the format")
+    for (i in parts.indices) {
+        if (i % 2 == 0) {
+            if (parts[i] in mistake) throw IllegalArgumentException("Invalid format")
         }
-
+    }
+    if (Regex("""[0-9 +-]+""").matches(expression)) {
         for (element in parts) {
-            try {
-                if ((element.contains("+") || element.contains("-")) && element !in mistake) throw IllegalArgumentException(
-                    "Invalid characters"
-                )
-                numbers.add(element.toInt())
-            } catch (nfe: NumberFormatException) {
-                signs.add(element)
-            }
+            if (Regex("""[+-]+[0-9]""").matches(element)) throw IllegalArgumentException("Invalid format")
+            else if (Regex("""[0-9]+""").matches(element)) numbers.add(element.toInt())
+            else signs.add(element)
         }
-        var result = numbers[0]
-        for (i in numbers.indices) {
-            for (index in signs.indices) {
-                if (i != 0) {
-                    if (signs[index] == "+") {
-                        result += numbers[i]
-                        signs.removeFirst()
-                        break
-                    } else {
-                        result -= numbers[i]
-                        signs.removeFirst()
-                        break
-                    }
+    } else throw IllegalArgumentException("Invalid format")
+
+    var result = numbers[0]
+    for (i in numbers.indices) {
+        for (index in signs.indices) {
+            if (i != 0) {
+                if (signs[index] == "+") {
+                    result += numbers[i]
+                    signs.removeFirst()
+                    break
+                } else {
+                    result -= numbers[i]
+                    signs.removeFirst()
+                    break
                 }
             }
         }
-        return result
-    } catch (e: Exception) {
-        throw IllegalArgumentException()
     }
+    return result
 }
 
 /**
