@@ -94,27 +94,22 @@ fun dateStrToDigit(str: String): String {
         "ноября" to 11,
         "декабря" to 12
     )
-    val occurrencesCount = str.replace(" ", "  ").length - str.length
-    if (occurrencesCount != 2) return ""
-    try {
+    if (Regex("""^[0-9]+ [а-яА-яёЁ]+ [0-9]+${'$'}""").matches(str)) {
         for (part in parts.indices) {
             if (part == 1 && month.contains(parts[part])) {
                 month[parts[1]]?.let { number.add(it) }
             }
             if (part != 1) number.add(parts[part].toInt())
         }
-    } catch (e: NumberFormatException) {
-        return ""
-    }
-    if (number.size == 3) {
-        for (i in number.indices) {
+
+        if (number.size == 3) {
             result =
                 if (number[0] <= daysInMonth(number[1], number[2])) {
                     String.format("%02d.%02d.%d", number[0], number[1], number[2])
                 } else ""
-        }
+        } else return ""
+        return result
     } else return ""
-    return result
 }
 
 /**
@@ -146,9 +141,8 @@ fun dateDigitToStr(digital: String): String {
         11 to "ноября",
         12 to "декабря"
     )
-    val occurrencesCount = digital.length - digital.replace(".", "").length
-    if (occurrencesCount != 2) return ""
-    try {
+
+    if (Regex("""^[0-9]+(\.)[0-9]+(\.)[0-9]+${'$'}""").matches(digital)) {
         for (i in parts.indices) {
             val num = parts[i].toInt()
             if (i == 1 && month.contains(num)) {
@@ -157,20 +151,18 @@ fun dateDigitToStr(digital: String): String {
             }
             if (i != 1) number.add(num)
         }
-    } catch (e: NumberFormatException) {
-        return ""
-    }
 
-    if (number.size == 3) {
-        for (i in number.indices) {
-            if (i == 1 && days !in 1..12) return ""
-            else result =
-                if (number[0] as Int <= daysInMonth(days, number[2] as Int)) {
-                    "${number[0]} ${number[1]} ${number[2]}"
-                } else return ""
-        }
+        if (number.size == 3) {
+            for (i in number.indices) {
+                if (i == 1 && days !in 1..12) return ""
+                else result =
+                    if (number[0] as Int <= daysInMonth(days, number[2] as Int)) {
+                        "${number[0]} ${number[1]} ${number[2]}"
+                    } else return ""
+            }
+        } else return ""
+        return result
     } else return ""
-    return result
 }
 
 /**
