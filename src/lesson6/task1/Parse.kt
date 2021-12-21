@@ -126,7 +126,7 @@ fun dateDigitToStr(digital: String): String {
     val parts = digital.split(".")
     val number = mutableListOf<Any>()
     var result = ""
-    var days = 0
+    var daysMonth = 0
     val month = mapOf<Int, String>(
         1 to "января",
         2 to "февраля",
@@ -146,7 +146,7 @@ fun dateDigitToStr(digital: String): String {
         for (i in parts.indices) {
             val num = parts[i].toInt()
             if (i == 1 && month.contains(num)) {
-                days = num
+                daysMonth = num
                 month[num]?.let { number.add(it) }
             }
             if (i != 1) number.add(num)
@@ -154,9 +154,9 @@ fun dateDigitToStr(digital: String): String {
 
         if (number.size == 3) {
             for (i in number.indices) {
-                if (i == 1 && days !in 1..12) return ""
+                if (i == 1 && daysMonth !in 1..12) return ""
                 else result =
-                    if (number[0] as Int <= daysInMonth(days, number[2] as Int)) {
+                    if (number[0] as Int <= daysInMonth(daysMonth, number[2] as Int)) {
                         "${number[0]} ${number[1]} ${number[2]}"
                     } else return ""
             }
