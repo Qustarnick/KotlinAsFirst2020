@@ -319,14 +319,16 @@ fun russian(n: Int): String {
     val list1000 = mutableListOf<String>()
     val units = listOf("одна", "две", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
     while (n1 > 0) {
-        number.add(0, n1 % 10)
+        number.add(n1 % 10)
         n1 /= 10
     }
-    if (number.size > 3) {
-        for ((index, element) in number.withIndex()) {
-            if ((number.size == 5 && n / 1000 in 11..19) || (number.size == 6 && (n / 1000 % 100 in 11..19))) {
+    val number2 = number.reversed().toMutableList()
+    if (number2.size > 3) {
+        for ((index, element) in number2.withIndex()) {
+            if ((number2.size == 5 && n / 1000 in 11..19) || (number2.size == 6 && (n / 1000 % 100 in 11..19))) {
                 list1000.add("тысяч")
-            } else if ((number.size == 4 && index == 0) || (number.size == 5 && index == 1) || (number.size == 6 && index == 2)) {
+            //Не придумала как исправить
+            } else if ((number2.size == 4 && index == 0) || (number2.size == 5 && index == 1) || (number2.size == 6 && index == 2)) {
                 when (element) {
                     1 -> list1000.add("тысяча")
                     2, 3, 4 -> list1000.add("тысячи")
@@ -338,13 +340,13 @@ fun russian(n: Int): String {
     if (n == 0) {
         result.add("ноль")
     }
-    if (number.size < 4) {
+    if (number2.size < 4) {
         result.add(numbers(n))
-    } else if (number.size == 4) {
-        result.add(units[number[0] - 1])
+    } else if (number2.size == 4) {
+        result.add(units[number2[0] - 1])
         result.add(list1000[0])
         result.add(numbers(n % 1000))
-    } else if (number.size >= 5) {
+    } else if (number2.size >= 5) {
         result.add(numbers(n / 1000))
         result = result.joinToString().split(" ").toMutableList()
         for (index in result.indices) {
