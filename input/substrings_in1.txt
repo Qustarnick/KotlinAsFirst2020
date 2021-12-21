@@ -22,16 +22,3 @@
  *
  * Обратите внимание: данная функция не имеет возвращаемого значения
  */
-
- {
-     val input = File(inputName).reader().use { it.readText().lowercase() }
-     var result = mutableMapOf<String, Int>()
-     for (substring in substrings) {
-         val pattern = Regex(substring.lowercase())
-         result[substring] = pattern.findAll(input).count()
-     }
-     return result
- }
-
- //input.contains(substring, ignoreCase = true)
- //input.count {  }
