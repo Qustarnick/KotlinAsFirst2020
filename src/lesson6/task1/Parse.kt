@@ -97,7 +97,7 @@ fun dateStrToDigit(str: String): String {
             "декабря" -> "12"
             else -> ""
         }
-        if (year in 1000..3000 || month == "02" && day in 1..28 || month !in listOf("02", "") && day in 1..31)
+        if (year in 1000..3000 && (month == "02" && day in 1..28 || month !in listOf("02", "") && day in 1..31))
             return String.format("%02d.%s.%s", day, month, date[2])
     } catch (e: IndexOutOfBoundsException) {
         return ""
