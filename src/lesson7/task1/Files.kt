@@ -3,6 +3,7 @@
 package lesson7.task1
 
 import java.io.File
+import java.util.*
 
 // Урок 7: работа с файлами
 // Урок интегральный, поэтому его задачи имеют сильно увеличенную стоимость
@@ -63,7 +64,14 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  * Подчёркивание в середине и/или в конце строк значения не имеет.
  */
 fun deleteMarked(inputName: String, outputName: String) {
-    TODO()
+    File(outputName).bufferedWriter().use {
+        for (line in File(inputName).readLines()) {
+            if (!line.startsWith("_")) {
+                it.write(line)
+                it.newLine()
+            }
+        }
+    }
 }
 
 /**
