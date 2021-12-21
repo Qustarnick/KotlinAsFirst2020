@@ -51,18 +51,18 @@ fun timeSecondsToStr(seconds: Int): String {
  * Пример: консольный ввод
  */
 fun main() {
-println("Введите время в формате ЧЧ:ММ:СС")
-val line = readLine()
-if (line != null) {
-val seconds = timeStrToSeconds(line)
-if (seconds == -1) {
-println("Введённая строка $line не соответствует формату ЧЧ:ММ:СС")
-} else {
-println("Прошло секунд с начала суток: $seconds")
-}
-} else {
-println("Достигнут <конец файла> в процессе чтения строки. Программа прервана")
-}
+    println("Введите время в формате ЧЧ:ММ:СС")
+    val line = readLine()
+    if (line != null) {
+        val seconds = timeStrToSeconds(line)
+        if (seconds == -1) {
+            println("Введённая строка $line не соответствует формату ЧЧ:ММ:СС")
+        } else {
+            println("Прошло секунд с начала суток: $seconds")
+        }
+    } else {
+        println("Достигнут <конец файла> в процессе чтения строки. Программа прервана")
+    }
 }
 
 /**
@@ -79,28 +79,27 @@ println("Достигнут <конец файла> в процессе чтен
 
 fun dateStrToDigit(str: String): String {
     val date = str.split(" ")
-    try {
-        val day = date[0].toIntOrNull()
-        val month = when (date[1]) {
-            "января" -> "01"
-            "февраля" -> "02"
-            "марта" -> "03"
-            "апреля" -> "04"
-            "мая" -> "05"
-            "июня" -> "06"
-            "июля" -> "07"
-            "августа" -> "08"
-            "сентября" -> "09"
-            "октября" -> "10"
-            "ноября" -> "11"
-            "декабря" -> "12"
-            else -> ""
-        }
-        if (month == "02" && day in 1..28 || month !in listOf("02", "") && day in 1..31)
-            return String.format("%02d.%s.%s", day, month, date[2])
-    } catch (e: IndexOutOfBoundsException) {
-        return ""
+    if (date.size != 3) return ""
+    val day = date[0].toIntOrNull()
+    val month = when (date[1]) {
+        "января" -> "01"
+        "февраля" -> "02"
+        "марта" -> "03"
+        "апреля" -> "04"
+        "мая" -> "05"
+        "июня" -> "06"
+        "июля" -> "07"
+        "августа" -> "08"
+        "сентября" -> "09"
+        "октября" -> "10"
+        "ноября" -> "11"
+        "декабря" -> "12"
+        else -> ""
     }
+    if (month == "02" && day in 1..28 ||
+        month in listOf("01", "03", "05", "07", "08", "10", "12") && day in 1..31 ||
+        month !in listOf("02", "") && day in 1..30
+    ) return String.format("%02d.%s.%s", day, month, date[2])
     return ""
 }
 
