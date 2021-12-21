@@ -81,6 +81,7 @@ fun dateStrToDigit(str: String): String {
     val date = str.split(" ")
     if (date.size != 3) return ""
     val day = date[0].toIntOrNull()
+    val year = date[2].toIntOrNull() ?: return ""
     val month = when (date[1]) {
         "января" -> "01"
         "февраля" -> "02"
@@ -97,6 +98,7 @@ fun dateStrToDigit(str: String): String {
         else -> ""
     }
     if (month == "02" && day in 1..28 ||
+        month == "02" && day == 29 && (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) ||
         month in listOf("01", "03", "05", "07", "08", "10", "12") && day in 1..31 ||
         month !in listOf("02", "") && day in 1..30
     ) return String.format("%02d.%s.%s", day, month, date[2])
