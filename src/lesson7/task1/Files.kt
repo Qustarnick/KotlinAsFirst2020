@@ -2,7 +2,9 @@
 
 package lesson7.task1
 
+import ru.spbstu.kotlin.generate.assume.retry
 import java.io.File
+import java.io.PrintStream
 
 // Урок 7: работа с файлами
 // Урок интегральный, поэтому его задачи имеют сильно увеличенную стоимость
@@ -161,7 +163,7 @@ fun centerFile(inputName: String, outputName: String) {
  * 8) Если входной файл удовлетворяет требованиям 1-7, то он должен быть в точности идентичен выходному файлу
  */
 fun alignFileByWidth(inputName: String, outputName: String) {
-    TODO()
+
 }
 
 /**

@@ -45,6 +45,7 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean {
  * Дан номер месяца (от 1 до 12 включительно) и год (положительный).
  * Вернуть число дней в этом месяце этого года по григорианскому календарю.
  */
+
 fun daysInMonth(month: Int, year: Int): Int {
     val leapYear = ((year % 400 == 0) || (year % 4 == 0 && year % 100 != 0))
     return when {

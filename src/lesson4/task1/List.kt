@@ -390,15 +390,16 @@ fun numbers(n: Int): String {
     val list100 =
         listOf("сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот")
     while (n1 > 0) {
-        number.add(0, n1 % 10)
+        number.add(n1 % 10)
         n1 /= 10
     }
-    while (number.size > 0) {
-        for ((index, element) in number.withIndex()) {
-            if (number[index] == 0) continue
-            if (number.size == 1 && element != 0) {
+    val number2 = number.reversed().toMutableList()
+    while (number2.size > 0) {
+        for ((index, element) in number2.withIndex()) {
+            if (number2[index] == 0) continue
+            if (number2.size == 1 && element != 0) {
                 result.add(list1[element - 1])
-            } else if (number.size == 2) {
+            } else if (number2.size == 2) {
                 if (n % 100 in 11..19) {
                     if (index == 1) {
                         result.add(list11[element % 10 - 1])
@@ -409,11 +410,11 @@ fun numbers(n: Int): String {
                         result.add(list10[element - 1])
                     }
                 }
-            } else if (number.size == 3 && index == 0) {
+            } else if (number2.size == 3 && index == 0) {
                 result.add(list100[element - 1])
             }
         }
-        number.removeAt(0)
+        number2.removeAt(0)
     }
     return result.joinToString(separator = " ")
 }
