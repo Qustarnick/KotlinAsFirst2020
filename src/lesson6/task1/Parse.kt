@@ -79,7 +79,7 @@ fun main() {
 fun dateStrToDigit(str: String): String {
     val parts = str.split(" ")
     val number = mutableListOf<Int>()
-    var result = ""
+    val result: String
     val month = mapOf<String, Int>(
         "января" to 1,
         "февраля" to 2,
