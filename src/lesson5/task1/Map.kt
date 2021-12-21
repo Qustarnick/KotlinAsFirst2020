@@ -298,13 +298,35 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
 
+
+
+/**
+Не могу понять, как в этом задании избавиться от ? здесь:
+    map[list[i]]?.plusAssign(i)
+Тут я изначально хотел добавлять в список индекс i простым оператором += после проверки (map[list[i]] != null)
+
+и от !! здесь:
+    if (map[i]!!.size > 1) return Pair(map[i]!![0], map[i]!![1])
+
+Я пытался предварительно проверять значения на неравенство null, но видимо из-за того, что это значения ассоциативного
+массива, такая проверка ничего не даёт. Элвис-оператор также не получилось грамотно использовать.
+
+Подскажите пожалуйста, как в таких ситуациях лучше поступать, т.к. сталкиваюсь я с ними регулярно и часто непонятно,
+как избежать постоянного использования !! и ?
+*/
+
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
-    val set = mutableSetOf<Int>()
-    set.addAll(list)
+    val map = mutableMapOf<Int, MutableList<Int>>()
+    for (i in list.indices) {
+        if (map[list[i]] != null) {
+            map[list[i]]?.plusAssign(i)
+        } else map[list[i]] = mutableListOf(i)
+
+    }
     for (i in 0..number) {
-        if (i in set && number - i in set) {
+        if (i in map && number - i in map) {
             if (i == number - i) {
-                if (list.indexOf(i) != list.lastIndexOf(i)) return Pair(list.indexOf(i), list.lastIndexOf(i))
+                if (map[i]!!.size > 1) return Pair(map[i]!![0], map[i]!![1])
             } else return Pair(list.indexOf(i), list.indexOf(number - i))
         }
     }
