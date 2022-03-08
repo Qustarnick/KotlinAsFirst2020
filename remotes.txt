@@ -1,0 +1,6 @@
+mate2021        https://github.com/frjumi/KotlinAsFirst2021.git (fetch)
+mate2021        https://github.com/frjumi/KotlinAsFirst2021.git (push)
+my2021  https://github.com/Qustarnick/KotlinAsFirst2021 (fetch)
+my2021  https://github.com/Qustarnick/KotlinAsFirst2021 (push)
+origin  https://github.com/Qustarnick/KotlinAsFirst2020.git (fetch)
+origin  https://github.com/Qustarnick/KotlinAsFirst2020.git (push)
